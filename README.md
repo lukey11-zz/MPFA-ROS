@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # MPFA-ROS
-=======
-
-# CPFA-ROS
 
 This repository is a ROS (Robot Operating System) controller framework for the Swarmie robots used in the [NASA Swarmathon](http://www.nasaswarmathon.com), a national swarm robotics competition. 
 
@@ -375,7 +371,7 @@ Once the key has been setup, copy the key from the users machine to each rover y
 That's it! You should now have a seamless way to SSH without having to type in passwords each time!
 =======
 ## Behaviours
-# CPFA-ROS
+# MPFA-ROS
 This section provides an overview of the behaviours package. We
 describe the overall architecture of the package and a few pitfalls
 you may encounter when writing your own behaviours. The behaviours
@@ -386,7 +382,7 @@ porting the behavior to a different system without significantly
 rewriting the code. The interface between the abstract behaviours and
 ROS is handled by ROSAdapter which is responsible for sending and
 receiving all ROS messages.
-Please make sure that you have read all of the [documentation](https://github.com/BCLab-UNM/CPFA-ROS) and have set up all of the software regarding the Swarmathon as well as having read the [paper](https://www.cs.unm.edu/~melaniem/Publications_files/Hecker_Beyond_Pheromones_Swarm_Intelligence_2015.pdf)  that contains the algorithm.
+Please make sure that you have read all of the [documentation](https://github.com/lukey11/MPFA-ROS) and have set up all of the software regarding the Swarmathon as well as having read the [paper](https://www.cs.unm.edu/~melaniem/Publications_files/Hecker_Beyond_Pheromones_Swarm_Intelligence_2015.pdf)  that contains the algorithm.
 The architecture of the behaviours package is hierarchical, with the
 `ROSAdapter` at the top of the hierarchy. The ROSAdapter interacts
 with the `LogicController` which in turn manages all the individual
@@ -404,36 +400,36 @@ into the high-level foraging behavior of the swarmies. To add a new
 behavior to the swarmies you would write a new controller and
 integrate it in to the logic controller through the priority system
 described below.
-### Running the CPFA simulation
+### Running the MPFA simulation
 #### Controller API
-Assuming you have installed everything as the Swarmathon-ROS repository has instructed and you have read the paper, then we can begin. The CPFA relies a set of parameters that can be modified depending on the resource distribution that will be used for a run. 
+Assuming you have installed everything as the Swarmathon-ROS repository has instructed and you have read the paper, then we can begin. The MPFA relies a set of parameters that can be modified depending on the resource distribution that will be used for a run. 
 * `void Reset()`
 
   Resets the internal state of the controller.
-In the ` ~/rover_workspace/CPFA_parameters/` directory you will see a set of files with a `.yaml` extension. Each file corresponds to the appropriate resource distribution and have been hand tuned to have parameters that will work for each of those distributions, albeit not optimally. 
+In the ` ~/rover_workspace/MPFA_parameters/` directory you will see a set of files with a `.yaml` extension. Each file corresponds to the appropriate resource distribution and have been hand tuned to have parameters that will work for each of those distributions, albeit not optimally. 
 * `Result DoWork()`
 
   Determines what action should be taken by the behaviour and returns
   that action in a `Result` struct. Note that no action is taken in
   this method, we just determine what needs to be done and pass it
   back to be executed by the `ROSAdapter`.
-![Alt text](https://github.com/BCLab-UNM/CPFA-ROS/blob/documentation/readmeImages/parameters.png "CPFA Parameters")
+![Alt text](https://github.com/lukey11/MPFA-ROS/blob/documentation/readmeImages/parameters.png "MPFA Parameters")
 * `bool ShouldInterrupt()`
 To start the simulation you will run the `~/rover_workspace/run.sh` script like normal to start up the GUI. Selecting the uniform distribution option will run the   `uniform.yaml` parameters file, the clustered option will run the `clustered.yaml` paramteters file, and the power law option will run the `powerlaw.yaml` file. 
   If the internal state of the controller is such that it must take
   action this method should return true.
-![Alt text](https://github.com/BCLab-UNM/CPFA-ROS/blob/documentation/readmeImages/gui1.png "Opening Screen")
+![Alt text](https://github.com/BCLab-UNM/MPFA-ROS/blob/documentation/readmeImages/gui1.png "Opening Screen")
 * `bool HasWork()`
-If you decide to choose a custom world, then you will also be allowed to pick any of the `.yaml` files available by clicking on the CPFA button as well as make any custom paramter files with custom parameters as long as they follow the same format as the default parameter files.
+If you decide to choose a custom world, then you will also be allowed to pick any of the `.yaml` files available by clicking on the MPFA button as well as make any custom paramter files with custom parameters as long as they follow the same format as the default parameter files.
   If the controller has work to do (ie. needs to take action in some
   way) then this method should return true.
-![Alt text](https://github.com/BCLab-UNM/CPFA-ROS/blob/documentation/readmeImages/gui2.png "Custom Parameters Widget")
+![Alt text](https://github.com/lukey11/MPFA-ROS/blob/documentation/readmeImages/gui2.png "Custom Parameters Widget")
 * `void ProcessData()`
 #### ROS Parameters
   Carries out behaviour-specific processing of internal data (or data
   that has been passed in to the controller such as robot location or
   other sensor readings).
-The `.yaml`files will get loaded into the rosparam namespace as soon as the simulation starts. If you would like to see a list of all the CPFA parameters, then run the following command:
+The `.yaml`files will get loaded into the rosparam namespace as soon as the simulation starts. If you would like to see a list of all the MPFA parameters, then run the following command:
 ### ROSAdapter
 ```
 The main role of `ROSAdapter` is to manage sensor input, passing
@@ -446,7 +442,7 @@ gripper to move. The easiest way to trigger some other action is to
 have the ROSAdapter poll the logic controller at regular intervals to
 check whether some event has occurred (a good example of this is
 checking whether a manual waypoint has been reached).
-rosparam list | grep CPFA
+rosparam list | grep MPFA
 ### Logic Controller
 ```
 The logic controller manages all the other controllers in the
@@ -474,7 +470,7 @@ actuators. In this state the result from the highest priority
 controller is passed directly to the drive controller do be acted on.
 This allows for very high precision driving to perform tasks such as
 aligning with a cube when picking it up.
-![Alt text](https://github.com/BCLab-UNM/CPFA-ROS/blob/documentation/readmeImages/rosparamlist.png "rosparam list")
+![Alt text](https://github.com/lukey11/MPFA-ROS/blob/documentation/readmeImages/rosparamlist.png "rosparam list")
 The process state state-machine determines the priorities of the
 controllers. There are four states:
 * SEARCHING
@@ -518,10 +514,9 @@ Example:
   search method.
 ```
 ### PID
-![Alt text](https://github.com/BCLab-UNM/CPFA-ROS/blob/documentation/readmeImages/debugging.png "Debugging")
+![Alt text](https://github.com/BCLab-UNM/MPFA-ROS/blob/documentation/readmeImages/debugging.png "Debugging")
 The PID class implements a generic proportional-integral-derivative
 controller that is configured using the `PIDConfig` struct. This
 struct is used to set the gains and the anti-windup parameters of the
 PID. The PID parameters can be tuned by modifying the config structs
 in the drive controller.
->>>>>>> 4903c5bd8dc8088cfdfadc39c2fc735572c6e919
